@@ -39,10 +39,13 @@ global_variable float render_scale = 0.01f;
 internal void
 draw_rect(float x, float y, float half_size_x, float half_size_y, u32 color) {
 
-	x *= render_state.height * render_scale;
-	y *= render_state.height * render_scale;							// Scaling wrt height, can also be done with width
-	half_size_x *= render_state.height * render_scale;
-	half_size_y *= render_state.height * render_scale;
+	int scaling_quant = render_state.height;
+	if ((float)render_state.width / (float)render_state.height < 1.0) scaling_quant = render_state.width;
+
+	x *= scaling_quant * render_scale;
+	y *= scaling_quant * render_scale;							// Scaling wrt height, can also be done with width
+	half_size_x *= scaling_quant * render_scale;
+	half_size_y *= scaling_quant * render_scale;
 
 	x += render_state.width / 2.f;						// Adding half the width and height
 	y += render_state.height / 2.f;

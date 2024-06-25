@@ -11,7 +11,7 @@ typedef unsigned long long u64;
 #define internal static
 
 inline int
-clamp(int min, int val, int max) {
+clamp(int min, int val, int max) {					// Clamps the value within the bounds
 	if (val > max) return max;
 	if (val < min) return min;
 	return val;
