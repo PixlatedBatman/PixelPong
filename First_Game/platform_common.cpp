@@ -8,6 +8,8 @@ enum {
 	BUTTON_DOWN,					// Enumeratring the moves
 	BUTTON_RIGHT,
 	BUTTON_LEFT,					// Remember, these should be commas, not semicolons
+	BUTTON_W,
+	BUTTON_S,
 
 	BUTTON_COUNT,					// Count of number of moves, must be the last item
 };
