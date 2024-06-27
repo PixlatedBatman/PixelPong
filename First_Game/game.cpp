@@ -11,6 +11,8 @@ float ball_half_size_x = 1, ball_half_size_y = 1;
 
 // p is position, dp is speed, ddp is acceleration
 
+int player1_score = 0, player2_score = 0;
+
 internal void
 simulate_player(float* p, float* dp, float ddp, float dt) {
 	ddp -= *dp * 10.f;
@@ -39,7 +41,7 @@ aabb_vs_aabb(float bpx, float bpy, float ppx, float ppy) {
 internal void
 simulate_game(Input* input, float dt) {
 	//render_background();
-	clear_screen(0x00ffff);
+	clear_screen(0xff5500);
 	draw_rect(0, 0, 85, 45, 0xffaa33);
 
 	float player1_ddp = 0.f;
@@ -48,8 +50,16 @@ simulate_game(Input* input, float dt) {
 	if (is_down(BUTTON_UP)) player1_ddp += 2000;
 	if (is_down(BUTTON_DOWN)) player1_ddp -= 2000;
 
+#if 0
 	if (is_down(BUTTON_W)) player2_ddp += 2000;
 	if (is_down(BUTTON_S)) player2_ddp -= 2000;
+
+#else
+	player2_ddp = (ball_p_y - player2_p) * 150;
+	if (player2_ddp > 1300) player2_ddp = 1300;
+	if (player2_ddp < -1300) player2_ddp = -1300;
+
+#endif
 
 	simulate_player(&player1_p, &player1_dp, player1_ddp, dt);
 	simulate_player(&player2_p, &player2_dp, player2_ddp, dt);
@@ -85,12 +95,14 @@ simulate_game(Input* input, float dt) {
 			ball_p_y = 0;
 			ball_dp_y = 0;
 			ball_dp_x *= -1;
+			player2_score++;
 		}
 		else if (ball_p_x - ball_half_size_x < -arena_half_size_x) {
 			ball_p_x = 0;
 			ball_p_y = 0;
 			ball_dp_y = 0;
 			ball_dp_x *= -1;
+			player1_score++;
 		}
 	}
 
@@ -99,4 +111,7 @@ simulate_game(Input* input, float dt) {
 
 	draw_rect(player_p_x, player1_p, player_half_size_x, player_half_size_y, 0xff0000);			// Players
 	draw_rect(-player_p_x, player2_p, player_half_size_x, player_half_size_y, 0xff0000);
+
+	draw_number(player1_score, 10, 40, 1.f, 0xbbffbb);
+	draw_number(player2_score, -10, 40, 1.f, 0xbbffbb);
 }
